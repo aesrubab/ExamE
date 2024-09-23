@@ -1,27 +1,31 @@
-﻿using ConsoleApp1.Configuration;
-using ConsoleApp1.Entities.Concrate;
+﻿using ConsoleApp1.Entities.Concrate;
 using ConsoleApp1.Insta.Project.DAL.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ConsoleApp1.Insta.Project.DAL.Context;
 
-public class InstaDbContext:DbContext
+//DbContext yazaraq VB ile elaqe qururuq
+public class InstaDbContext : DbContext
 {
+    //Program cs de default ctor ist edirik deye bos ctor yaziriq burada
+    public InstaDbContext()
+    {
+    }
+
+    //DbContext sinifini konfiqurasiya etmekcun asagidakini yaziriq
+    public InstaDbContext(DbContextOptions<InstaDbContext> options) : base(options)
+    {
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<UserDetails> UserDetailss { get; set; }
+    public DbSet<UserDetail> UserDetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=STHQ0123-01;Initial Catalog = MiniInsta;User ID=admin;Password=admin;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer("Data Source=WINDOWS-2P363HE;Initial Catalog=SocialMedia;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
     }
 
 
@@ -29,11 +33,7 @@ public class InstaDbContext:DbContext
     {
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new UserDetailsConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());
-
-        base.OnModelCreating(modelBuilder);
     }
-
 
 }
